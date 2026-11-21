@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Matematika Berkah</title>
+<style>
+:root{--bg:#f7f5ef;--fg:#1f2a28;--mut:#5b6b67;--card:#fff;--line:#dcd8cb;--ac:#0f766e;--acf:#fff;--gold:#a16207;--ok:#166534;--okb:#dcfce7;--bad:#991b1b;--badb:#fee2e2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10181a;--fg:#e8efed;--mut:#9db0ab;--card:#182426;--line:#2b3c3e;--ac:#2dd4bf;--acf:#06201d;--gold:#facc15;--ok:#86efac;--okb:#14351f;--bad:#fca5a5;--badb:#3b1717}}
+:root[data-theme="dark"]{--bg:#10181a;--fg:#e8efed;--mut:#9db0ab;--card:#182426;--line:#2b3c3e;--ac:#2dd4bf;--acf:#06201d;--gold:#facc15;--ok:#86efac;--okb:#14351f;--bad:#fca5a5;--badb:#3b1717}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:28px 18px 18px;text-align:center;border-bottom:1px solid var(--line)}
+header h1{margin:0 0 6px;font-size:1.55rem;line-height:1.25}
+header p{margin:0;color:var(--mut);font-size:.95rem}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--fg);padding:8px 14px;border-radius:999px;font:inherit;font-size:.9rem;cursor:pointer}
+nav button.on{background:var(--ac);color:var(--acf);border-color:var(--ac);font-weight:600}
+main{max-width:760px;margin:0 auto;padding:18px 16px 48px}
+section{display:none}section.on{display:block}
+h2{font-size:1.25rem;margin:4px 0 12px}h3{font-size:1.05rem;margin:0 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+.ayat{border-left:4px solid var(--gold)}
+.ar{font:1.7rem/2.2 "Amiri","Scheherazade New","Noto Naskh Arabic",serif;direction:rtl;text-align:right;margin:4px 0}
+.ref{color:var(--gold);font-weight:600;font-size:.88rem}
+.rumus{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;margin:8px 0;font-family:ui-monospace,Menlo,monospace;font-size:.92rem}
+.nilai{background:var(--okb);color:var(--ok);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:.93rem}
+label{display:block;font-size:.88rem;color:var(--mut);margin:10px 0 4px}
+input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out{margin-top:12px;padding:12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);min-height:48px}
+.btn{margin-top:12px;border:0;background:var(--ac);color:var(--acf);padding:10px 18px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:10px;font:inherit;cursor:pointer}
+.opt.ok{background:var(--okb);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--badb);border-color:var(--bad);color:var(--bad)}
+.fb{margin-top:10px;font-size:.93rem}
+ul{padding-left:20px;margin:6px 0}
+details.lat{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0;background:var(--bg)}details summary{cursor:pointer;font-weight:600}details details{margin-top:6px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:12px}.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+@media (max-width:480px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1 id="h-judul"></h1><p id="h-sub"></p></header>
+<nav id="nav"></nav>
+<main>
+<section id="mulai"></section>
+<section id="materi"></section>
+<section id="kalkulator">
+<h2>Kalkulator Interaktif</h2>
+<div class="card"><h3>🧮 Untung / Rugi</h3>
+<div class="row"><div><label>Harga beli (Rp)</label><input id="u1" type="number" value="80000"></div><div><label>Harga jual (Rp)</label><input id="u2" type="number" value="92000"></div></div>
+<button class="btn" onclick="hUntung()">Hitung</button><div class="out" id="uo">Tekan “Hitung”.</div></div>
+<div class="card"><h3>🏷️ Diskon</h3>
+<div class="row"><div><label>Harga awal (Rp)</label><input id="d1" type="number" value="250000"></div><div><label>Diskon (%)</label><input id="d2" type="number" value="20"></div></div>
+<button class="btn" onclick="hDiskon()">Hitung</button><div class="out" id="do">Tekan “Hitung”.</div></div>
+<div class="card"><h3>👷 Pekerja &amp; Hari (Berbalik Nilai)</h3>
+<div class="row"><div><label>Pekerja awal</label><input id="p1" type="number" value="6"></div><div><label>Hari awal</label><input id="p2" type="number" value="20"></div></div>
+<label>Pekerja baru</label><input id="p3" type="number" value="10">
+<button class="btn" onclick="hPekerja()">Hitung</button><div class="out" id="po">Tekan “Hitung”.</div></div>
+<div class="card"><h3>🌾 Zakat Mal</h3>
+<div class="row"><div><label>Total harta tersimpan 1 tahun (Rp)</label><input id="z1" type="number" value="150000000"></div><div><label>Harga emas per gram (Rp)</label><input id="z2" type="number"></div></div>
+<p id="z-cat" style="font-size:.85rem;color:var(--mut);margin:6px 0 0"></p>
+<button class="btn" onclick="hZakat()">Hitung</button><div class="out" id="zo">Tekan “Hitung”.</div></div>
+<div class="card"><h3>📈 Bunga Tunggal</h3>
+<div class="row"><div><label>Modal (Rp)</label><input id="b1" type="number" value="2000000"></div><div><label>Bunga (% per tahun)</label><input id="b2" type="number" value="6"></div></div>
+<label>Lama (bulan)</label><input id="b3" type="number" value="9">
+<button class="btn" onclick="hBunga()">Hitung</button><div class="out" id="bo">Tekan “Hitung”.</div></div>
+<div class="card"><h3>🗺️ Skala Peta</h3>
+<div class="row"><div><label>Skala 1 : ...</label><input id="s1" type="number" value="500000"></div><div><label>Jarak di peta (cm)</label><input id="s2" type="number" value="8"></div></div>
+<button class="btn" onclick="hSkala()">Hitung</button><div class="out" id="so">Tekan “Hitung”.</div></div>
+<div class="card"><h3>⚖️ Bruto, Neto, Tara</h3>
+<div class="row"><div><label>Bruto (kg)</label><input id="n1" type="number" value="50"></div><div><label>Tara (%)</label><input id="n2" type="number" value="2"></div></div>
+<button class="btn" onclick="hNeto()">Hitung</button><div class="out" id="no">Tekan “Hitung”.</div></div>
+</section>
+<section id="kuis"><h2>Kuis</h2><div class="bar"><i id="pb"></i></div><div class="card" id="qbox"></div></section>
+<section id="refleksi"></section>
+</main>
+
+<script>
+/* =====================================================================
+   CARA EDIT ISI WEB (tanpa perlu paham pemrograman)
+   1. Buka file ini dengan Notepad / VS Code / editor teks apa saja.
+   2. Ubah HANYA teks di antara tanda kutip "..." pada blok DATA di bawah.
+   3. Jangan hapus tanda kutip, koma, kurung [ ] atau kurung { }.
+   4. Kalau teks butuh tanda kutip, pakai “ ” (kutip melengkung), bukan ".
+   5. Tulis **teks** untuk membuat huruf tebal.
+   6. Simpan (Ctrl+S), lalu buka/refresh file di browser.
+   Menambah item: salin satu blok { ... }, tempel setelah koma, lalu edit.
+   Menghapus item: hapus satu blok { ... } beserta komanya.
+   ===================================================================== */
+const DATA = {
+
+  // ---------- JUDUL ----------
+  judul: "Matematika Berkah 🌙",
+  subjudul: "Perbandingan & Aritmetika Sosial · Terintegrasi Nilai Islam · SMP Kelas VII",
+
+  // ---------- MENU "MULAI" ----------
+  mulai: {
+    judulHalaman: "Selamat Datang",
+    tujuanJudul: "Tujuan Pembelajaran",
+    tujuan: [
+      "Menyederhanakan perbandingan dan menggunakan skala pada peta.",
+      "Menyelesaikan masalah perbandingan senilai dan berbalik nilai.",
+      "Menghitung persentase, untung, rugi, diskon, dan pajak.",
+      "Menghitung bruto, neto, tara, dan bunga tunggal.",
+      "Menghubungkan perhitungan tersebut dengan nilai jujur, adil, zakat, dan larangan riba."
+    ],
+    ayat: {
+      judul: "Ayat Pembuka: Takaran yang Adil",
+      arab: "وَأَوْفُوا الْكَيْلَ إِذَا كِلْتُمْ وَزِنُوا بِالْقِسْطَاسِ الْمُسْتَقِيمِ",
+      ref: "QS. Al-Isrā’ [17]: 35 (potongan ayat)",
+      teks: "Artinya kurang lebih: sempurnakanlah takaran apabila kamu menakar, dan timbanglah dengan neraca yang benar. Kejujuran dalam ukuran dan hitungan adalah dasar jual beli yang berkah. Karena itu, ketelitian berhitung bukan sekadar soal nilai ujian, tetapi juga bagian dari akhlak."
+    },
+    caraBelajarJudul: "Cara Belajar",
+    caraBelajar: "Baca **Materi** satu per satu, coba bagian **Coba sendiri**, gunakan **Kalkulator** dengan angkamu sendiri, kerjakan **Kuis 20 soal**, lalu tulis **Refleksi**.",
+    tombol: "Mulai Belajar →"
+  },
+
+  // ---------- MENU "MATERI" ----------
+  // tipe "kartu" : judul, teks, rumus (daftar baris), contoh (daftar), nilai, latihan {soal, jawab} (boleh dihapus)
+  // tipe "ayat"  : judul, arab, ref, teks
+  materi: [
+    { tipe: "kartu", judul: "1. Perbandingan dan Skala",
+      teks: "Perbandingan membandingkan dua besaran sejenis dan ditulis a : b. Untuk menyederhanakannya, bagi kedua bilangan dengan faktor persekutuan terbesar (FPB). Skala adalah perbandingan jarak pada peta dengan jarak sebenarnya.",
+      rumus: ["a : b = (a ÷ k) : (b ÷ k), k = FPB", "Skala = jarak pada peta : jarak sebenarnya", "Bagian = (bagian ÷ jumlah bagian) × total"],
+      contoh: [
+        "**Contoh 1 (menyederhanakan):** Di kelas ada 12 siswa laki-laki dan 18 siswa perempuan. FPB 12 dan 18 adalah 6, sehingga 12 : 18 = 2 : 3.",
+        "**Contoh 2 (skala):** Peta berskala 1 : 2.000.000, jarak di peta 5 cm. Jarak sebenarnya = 5 × 2.000.000 = 10.000.000 cm = 100 km.",
+        "**Contoh 3 (membagi):** Uang Rp600.000 dibagi untuk Ali dan Budi dengan perbandingan 2 : 3. Jumlah bagian = 5. Ali = 2/5 × 600.000 = Rp240.000, Budi = 3/5 × 600.000 = Rp360.000."
+      ],
+      nilai: "🌿 Nilai Islam: Allah memerintahkan berlaku adil (QS. An-Nahl: 90). Perbandingan membantu membagi dengan adil. Dalam usaha bagi hasil (mudharabah), keuntungan dibagi sesuai nisbah yang disepakati, misalnya 60 : 40 antara pemilik modal dan pengelola.",
+      latihan: { soal: "Peta berskala 1 : 1.000.000. Jarak di peta 3 cm. Berapa km jarak sebenarnya?", jawab: "3 × 1.000.000 = 3.000.000 cm = 30 km." } },
+
+    { tipe: "kartu", judul: "2. Perbandingan Senilai",
+      teks: "Jika satu besaran naik, besaran lain ikut naik dengan rasio tetap. Cara cepat: cari nilai satuan, lalu kalikan.",
+      rumus: ["a₁ / b₁ = a₂ / b₂", "Nilai satuan × banyaknya = hasil"],
+      contoh: [
+        "**Contoh 1:** Zakat fitrah 1 jiwa dianggap 2,5 kg beras. Untuk 4 anggota keluarga: 4 × 2,5 = 10 kg.",
+        "**Contoh 2:** 3 buku harganya Rp45.000. Harga 1 buku = 15.000, sehingga 5 buku = 5 × 15.000 = Rp75.000.",
+        "**Contoh 3:** Sebuah mobil menghabiskan 10 liter untuk 150 km. Untuk 24 liter: (24 ÷ 10) × 150 = 360 km."
+      ],
+      nilai: "🌿 Nilai Islam: zakat fitrah dibayarkan per jiwa, sehingga perbandingan senilai membantu keluarga menghitung kewajibannya dengan tepat. Besaran yang berlaku mengikuti ketentuan lembaga zakat setempat.",
+      latihan: { soal: "8 pensil harganya Rp24.000. Berapa harga 11 pensil?", jawab: "Harga 1 pensil = 3.000, sehingga 11 pensil = 33.000. Jawab: Rp33.000." } },
+
+    { tipe: "kartu", judul: "3. Perbandingan Berbalik Nilai",
+      teks: "Jika satu besaran naik, besaran lain turun, dan hasil kali keduanya tetap. Ciri khas: pekerja dan waktu, kecepatan dan waktu, jumlah orang dan lamanya persediaan.",
+      rumus: ["a₁ × b₁ = a₂ × b₂"],
+      contoh: [
+        "**Contoh 1:** 6 pekerja membangun mushala dalam 20 hari. Jika ada 10 pekerja: (6 × 20) ÷ 10 = 12 hari.",
+        "**Contoh 2:** Persediaan makanan cukup untuk 30 santri selama 12 hari. Jika santri menjadi 36: (30 × 12) ÷ 36 = 10 hari.",
+        "**Contoh 3:** Dengan kecepatan 60 km/jam waktu tempuh 4 jam. Dengan kecepatan 80 km/jam: (60 × 4) ÷ 80 = 3 jam."
+      ],
+      nilai: "🌿 Nilai Islam: gotong royong (ta’āwun) mempercepat pekerjaan baik. Lihat QS. Al-Mā’idah: 2 tentang tolong-menolong dalam kebaikan.",
+      latihan: { soal: "12 orang membersihkan masjid dalam 6 hari. Jika dikerjakan 18 orang, berapa hari?", jawab: "12 × 6 = 72, lalu 72 ÷ 18 = 4. Jawab: 4 hari." } },
+
+    { tipe: "kartu", judul: "4. Persentase",
+      teks: "Persen berarti per seratus. Persentase dipakai untuk membandingkan bagian dengan keseluruhan.",
+      rumus: ["p% = p / 100", "Nilai = p% × total", "Persentase = (bagian ÷ total) × 100%"],
+      contoh: [
+        "**Contoh 1:** 25% dari Rp80.000 = 25/100 × 80.000 = Rp20.000.",
+        "**Contoh 2:** Dari 40 siswa, 30 hadir. Persentase hadir = 30/40 × 100% = 75%.",
+        "**Contoh 3:** Harga Rp50.000 naik 10%. Kenaikan = 5.000, harga baru = Rp55.000."
+      ],
+      nilai: "🌿 Nilai Islam: persentase membuat kita bisa menghitung kewajiban yang tetap dan adil, seperti zakat mal 2,5% (sama dengan 1/40). Lihat QS. At-Taubah: 103 tentang zakat yang membersihkan dan menyucikan harta.",
+      latihan: { soal: "Dari 60 soal, Dika menjawab benar 51. Berapa persen jawaban benarnya?", jawab: "51/60 × 100% = 85%." } },
+
+    { tipe: "kartu", judul: "5. Penerapan Persentase: Zakat Mal",
+      teks: "Zakat mal wajib bila harta mencapai nisab (setara 85 gram emas) dan sudah dimiliki satu tahun (haul). Besarnya 2,5% dari harta.",
+      rumus: ["Nisab = 85 × harga emas per gram", "Zakat = 2,5% × Harta (jika Harta ≥ Nisab)"],
+      contoh: [
+        "**Contoh 1:** Harga emas Rp1.500.000/gram, nisab = 85 × 1.500.000 = Rp127.500.000. Harta Rp60.000.000 belum mencapai nisab, sehingga belum wajib zakat mal.",
+        "**Contoh 2:** Harta Rp200.000.000 (sudah haul) melebihi nisab. Zakat = 2,5% × 200.000.000 = Rp5.000.000."
+      ],
+      nilai: "🌿 Nilai Islam: zakat membersihkan harta dan menolong yang berhak. Perhitungan di sini hanya alat belajar; untuk kewajiban sebenarnya, tanyakan ke lembaga zakat atau ustaz.",
+      latihan: { soal: "Harga emas Rp1.400.000/gram. Apakah harta Rp100.000.000 (sudah haul) wajib dizakati?", jawab: "Nisab = 85 × 1.400.000 = 119.000.000. Harta 100.000.000 lebih kecil dari nisab, jadi belum wajib." } },
+
+    { tipe: "kartu", judul: "6. Untung dan Rugi",
+      teks: "Untung terjadi jika harga jual lebih besar dari harga beli. Rugi terjadi jika harga jual lebih kecil.",
+      rumus: ["Untung = Harga Jual − Harga Beli", "Rugi = Harga Beli − Harga Jual", "% Untung = (Untung ÷ Harga Beli) × 100%", "Harga Beli = Harga Jual ÷ (1 + % Untung)"],
+      contoh: [
+        "**Contoh 1:** Beli Rp80.000, jual Rp92.000. Untung = 12.000. % Untung = 12.000/80.000 × 100% = 15%.",
+        "**Contoh 2:** Beli Rp200.000, jual Rp170.000. Rugi = 30.000. % Rugi = 30.000/200.000 × 100% = 15%.",
+        "**Contoh 3:** Dijual Rp120.000 dengan untung 20%. Harga beli = 120.000 ÷ 1,2 = Rp100.000."
+      ],
+      nilai: "🌿 Nilai Islam: mengambil untung itu halal. Yang dilarang adalah menipu, misalnya menyembunyikan cacat barang. Pedagang yang jujur dan amanah mendapat kedudukan mulia (HR. at-Tirmidzi).",
+      latihan: { soal: "Beli Rp150.000, jual Rp180.000. Berapa persen untungnya?", jawab: "Untung = 30.000. 30.000/150.000 × 100% = 20%." } },
+
+    { tipe: "kartu", judul: "7. Diskon dan Pajak",
+      teks: "Diskon adalah potongan harga. Pajak adalah tambahan yang dikenakan pada harga. Jika keduanya dipakai, hitung diskon dulu, lalu pajak dari harga setelah diskon (kecuali soal menyebut lain).",
+      rumus: ["Diskon = % Diskon × Harga Awal", "Harga Bayar = Harga Awal − Diskon", "Harga + Pajak = Harga × (1 + % Pajak)"],
+      contoh: [
+        "**Contoh 1:** Sajadah Rp250.000 diskon 20%. Diskon = 50.000, harga bayar = Rp200.000.",
+        "**Contoh 2:** Harga Rp300.000 dengan pajak 10%. Pajak = 30.000, total = Rp330.000.",
+        "**Contoh 3:** Tas Rp400.000 diskon 25% lalu pajak 10%. Setelah diskon = 300.000, setelah pajak = Rp330.000."
+      ],
+      nilai: "🌿 Nilai Islam: penjual boleh memberi potongan harga, dan memberi kemudahan kepada pembeli termasuk akhlak yang baik. Namun “diskon” tidak boleh didahului menaikkan harga palsu.",
+      latihan: { soal: "Baju Rp180.000 diskon 30%. Berapa harga yang dibayar?", jawab: "Diskon = 54.000. Harga bayar = 180.000 − 54.000 = Rp126.000." } },
+
+    { tipe: "kartu", judul: "8. Bruto, Neto, dan Tara",
+      teks: "Bruto adalah berat kotor (barang dan kemasan). Neto adalah berat bersih barang. Tara adalah berat kemasan.",
+      rumus: ["Bruto = Neto + Tara", "Tara = Bruto − Neto", "% Tara = (Tara ÷ Bruto) × 100%"],
+      contoh: [
+        "**Contoh 1:** Karung gula bruto 50 kg, tara 2%. Tara = 1 kg, neto = 49 kg.",
+        "**Contoh 2:** Karung beras bruto 25 kg, neto 24,5 kg. Tara = 0,5 kg.",
+        "**Contoh 3:** Membeli beras bruto 40 kg, tara 1%, harga Rp12.000 per kg neto. Neto = 39,6 kg, bayar = 39,6 × 12.000 = Rp475.200."
+      ],
+      nilai: "🌿 Nilai Islam: neto harus ditimbang jujur dan tidak dikurangi. Ingat QS. Al-Isrā’: 35 dan QS. Al-Muthaffifīn: 1 tentang kecurangan dalam timbangan.",
+      latihan: { soal: "Satu dus minyak bruto 20 kg, tara 5%. Berapa neto?", jawab: "Tara = 5% × 20 = 1 kg, neto = 19 kg." } },
+
+    { tipe: "ayat", judul: "Halalnya Jual Beli",
+      arab: "وَأَحَلَّ اللَّهُ الْبَيْعَ وَحَرَّمَ الرِّبَا",
+      ref: "QS. Al-Baqarah [2]: 275 (potongan ayat)",
+      teks: "Allah menghalalkan jual beli dan mengharamkan riba. Dalam jual beli ada barang dan jasa yang dipertukarkan, sedangkan riba adalah tambahan yang disyaratkan atas pinjaman." },
+
+    { tipe: "kartu", judul: "9. Bunga Tunggal dan Riba",
+      teks: "Bunga tunggal dihitung hanya dari modal awal. Jika persen per tahun dan lama dalam bulan, ubah lama menjadi tahun (bulan ÷ 12). Dalam fikih muamalah, tambahan yang diperjanjikan di awal atas utang termasuk **riba**. Alternatifnya adalah akad bagi hasil (mudharabah) dan jual beli (murabahah) di lembaga keuangan syariah.",
+      rumus: ["Bunga = Modal × % per tahun × Lama (tahun)", "Total = Modal + Bunga", "Lama (tahun) = Bunga ÷ (Modal × % per tahun)"],
+      contoh: [
+        "**Contoh 1:** Pinjam Rp1.000.000, tambahan 2% per bulan selama 6 bulan. Bunga = 1.000.000 × 2% × 6 = Rp120.000.",
+        "**Contoh 2:** Tabungan Rp2.000.000, bunga 6% per tahun selama 9 bulan. Bunga = 2.000.000 × 6% × 9/12 = Rp90.000.",
+        "**Contoh 3:** Modal Rp1.000.000, bunga 5% per tahun, bunga yang diterima Rp150.000. Lama = 150.000 ÷ (1.000.000 × 5%) = 3 tahun."
+      ],
+      nilai: "🌿 Nilai Islam: menghitung bunga penting agar kita paham besarnya beban riba, dan menjadi alasan memilih transaksi yang bersih. Untuk rincian hukum, rujuklah guru, ulama, atau lembaga yang berwenang.",
+      latihan: { soal: "Modal Rp3.000.000, bunga tunggal 4% per tahun selama 2 tahun. Berapa bunganya?", jawab: "3.000.000 × 4% × 2 = Rp240.000." } },
+
+    { tipe: "kartu", judul: "Rangkuman Rumus",
+      teks: "",
+      rumus: ["Senilai: a₁/b₁ = a₂/b₂", "Berbalik nilai: a₁ × b₁ = a₂ × b₂", "Persentase = (bagian ÷ total) × 100%", "Untung/Rugi = selisih jual dan beli", "Harga bayar = harga awal − diskon", "Bruto = Neto + Tara", "Bunga = Modal × % × Lama (tahun)", "Zakat mal = 2,5% × Harta (jika ≥ nisab dan haul)"],
+      contoh: [],
+      nilai: "🌿 Pesan akhir: hitungan yang teliti dan jujur adalah bagian dari amanah dan akhlak seorang muslim." }
+  ],
+
+  // ---------- KALKULATOR ----------
+  zakat: {
+    hargaEmasPerGram: 1500000,   // ← ubah sesuai harga emas terbaru
+    nisabGram: 85,
+    catatan: "Ubah harga emas sesuai harga terbaru. Ini alat belajar; untuk kewajiban sebenarnya, tanyakan ke lembaga zakat atau ustaz."
+  },
+
+  // ---------- KUIS (20 SOAL) ----------
+  // q = pertanyaan, o = pilihan, a = nomor jawaban benar (0=A, 1=B, 2=C, 3=D), e = pembahasan
+  kuis: [
+    { q: "Peta berskala 1 : 500.000. Jarak dua kota pada peta 8 cm. Berapa jarak sebenarnya?",
+      o: ["4 km", "40 km", "400 km", "4.000 km"], a: 1,
+      e: "8 × 500.000 = 4.000.000 cm = 40 km." },
+    { q: "Bentuk paling sederhana dari perbandingan 24 : 36 adalah…",
+      o: ["1 : 2", "3 : 4", "2 : 3", "4 : 5"], a: 2,
+      e: "FPB 24 dan 36 adalah 12. 24 ÷ 12 = 2 dan 36 ÷ 12 = 3, sehingga 2 : 3." },
+    { q: "Keuntungan usaha Rp3.000.000 dibagi antara pemilik modal dan pengelola dengan nisbah 3 : 2. Bagian pemilik modal adalah…",
+      o: ["Rp1.200.000", "Rp1.800.000", "Rp1.500.000", "Rp2.000.000"], a: 1,
+      e: "Jumlah bagian = 5. Bagian pemilik modal = 3/5 × 3.000.000 = Rp1.800.000. Pembagian sesuai nisbah yang disepakati mencerminkan keadilan." },
+    { q: "4 buku harganya Rp60.000. Harga 7 buku adalah…",
+      o: ["Rp90.000", "Rp95.000", "Rp105.000", "Rp120.000"], a: 2,
+      e: "Harga 1 buku = 15.000. 7 × 15.000 = Rp105.000 (perbandingan senilai)." },
+    { q: "Zakat fitrah 1 jiwa dianggap 2,5 kg beras. Untuk 6 anggota keluarga dibutuhkan…",
+      o: ["12 kg", "17,5 kg", "20 kg", "15 kg"], a: 3,
+      e: "6 × 2,5 = 15 kg (perbandingan senilai)." },
+    { q: "8 pekerja menyelesaikan sebuah bangunan dalam 15 hari. Jika dikerjakan 12 pekerja, waktunya…",
+      o: ["10 hari", "8 hari", "12 hari", "22,5 hari"], a: 0,
+      e: "Berbalik nilai: 8 × 15 = 12 × x, sehingga x = 120 ÷ 12 = 10 hari." },
+    { q: "Persediaan makanan cukup untuk 40 santri selama 18 hari. Jika santri menjadi 60, persediaan cukup untuk…",
+      o: ["27 hari", "10 hari", "15 hari", "12 hari"], a: 3,
+      e: "40 × 18 = 720. 720 ÷ 60 = 12 hari." },
+    { q: "Dengan kecepatan 50 km/jam, perjalanan ditempuh 6 jam. Jika kecepatan 75 km/jam, waktunya…",
+      o: ["9 jam", "4,5 jam", "4 jam", "3 jam"], a: 2,
+      e: "50 × 6 = 300. 300 ÷ 75 = 4 jam." },
+    { q: "35% dari Rp240.000 adalah…",
+      o: ["Rp84.000", "Rp72.000", "Rp78.000", "Rp90.000"], a: 0,
+      e: "35/100 × 240.000 = 84.000." },
+    { q: "Dari 40 siswa, 34 siswa hadir. Persentase kehadiran adalah…",
+      o: ["80%", "82,5%", "87,5%", "85%"], a: 3,
+      e: "34/40 × 100% = 85%." },
+    { q: "Harta Pak Amir Rp80.000.000 sudah mencapai nisab dan haul. Zakat malnya (2,5%) adalah…",
+      o: ["Rp2.500.000", "Rp1.000.000", "Rp4.000.000", "Rp2.000.000"], a: 3,
+      e: "2,5% × 80.000.000 = 2.000.000. Zakat membersihkan harta dan menolong yang berhak." },
+    { q: "Harta Pak Hasan Rp95.000.000 sudah satu tahun. Harga emas Rp1.200.000/gram dan nisab 85 gram. Apakah wajib zakat mal?",
+      o: ["Wajib, zakatnya Rp2.375.000", "Belum wajib, karena belum mencapai nisab Rp102.000.000", "Wajib, zakatnya Rp2.000.000", "Belum wajib, karena nisabnya Rp85.000.000"], a: 1,
+      e: "Nisab = 85 × 1.200.000 = Rp102.000.000. Harta 95.000.000 masih di bawah nisab, sehingga belum wajib (tetap dianjurkan bersedekah)." },
+    { q: "Seorang pedagang membeli barang Rp200.000 dan menjualnya Rp230.000. Persentase untungnya…",
+      o: ["15%", "10%", "12,5%", "30%"], a: 0,
+      e: "Untung = 30.000. 30.000/200.000 × 100% = 15%." },
+    { q: "Barang dibeli Rp150.000 dan dijual Rp127.500. Persentase ruginya…",
+      o: ["10%", "12,5%", "15%", "17,5%"], a: 2,
+      e: "Rugi = 22.500. 22.500/150.000 × 100% = 15%." },
+    { q: "Sebuah barang dijual Rp138.000 dengan untung 15%. Harga belinya adalah…",
+      o: ["Rp117.300", "Rp120.000", "Rp123.000", "Rp130.000"], a: 1,
+      e: "Harga beli = 138.000 ÷ 1,15 = Rp120.000." },
+    { q: "Sepatu Rp400.000 diskon 25%, kemudian dikenai pajak 10% dari harga setelah diskon. Harga yang dibayar…",
+      o: ["Rp300.000", "Rp310.000", "Rp330.000", "Rp340.000"], a: 2,
+      e: "Setelah diskon: 400.000 − 100.000 = 300.000. Pajak 10% = 30.000, total Rp330.000." },
+    { q: "Sekarung gula bruto 50 kg dengan tara 2%. Neto gula tersebut adalah…",
+      o: ["49 kg", "48 kg", "48,5 kg", "49,5 kg"], a: 0,
+      e: "Tara = 2% × 50 = 1 kg. Neto = 50 − 1 = 49 kg." },
+    { q: "Beras bruto 25 kg dengan tara 0,5 kg dibeli dengan harga Rp13.000 per kg neto. Harga yang dibayar…",
+      o: ["Rp312.000", "Rp318.500", "Rp325.000", "Rp330.000"], a: 1,
+      e: "Neto = 25 − 0,5 = 24,5 kg. 24,5 × 13.000 = Rp318.500. Membayar sesuai neto adalah wujud kejujuran dalam timbangan." },
+    { q: "Tabungan Rp2.000.000 berbunga tunggal 6% per tahun. Bunga setelah 9 bulan adalah…",
+      o: ["Rp120.000", "Rp180.000", "Rp90.000", "Rp60.000"], a: 2,
+      e: "Bunga = 2.000.000 × 6% × 9/12 = Rp90.000." },
+    { q: "Dina meminjam Rp1.500.000 dengan syarat tambahan 2% per bulan selama 4 bulan. Bunga tunggalnya dan penilaian syariahnya adalah…",
+      o: ["Rp120.000; termasuk riba karena tambahan disyaratkan di awal pinjaman", "Rp120.000; bukan riba karena nilainya kecil", "Rp30.000; termasuk riba karena tambahan disyaratkan di awal pinjaman", "Rp300.000; bukan riba karena sudah disepakati"], a: 0,
+      e: "Bunga = 1.500.000 × 2% × 4 = Rp120.000. Tambahan atas pinjaman yang disyaratkan di awal termasuk riba (QS. Al-Baqarah: 275), terlepas dari besarnya." }
+  ],
+  teksKuis: {
+    selesai: "Selesai! 🎉",
+    skor: "Skormu:",
+    pujian4: "Masya Allah, pemahamanmu sangat baik!",
+    pujian3: "Bagus! Ulangi materi bagian yang masih keliru.",
+    pujianRendah: "Tetap semangat, pelajari lagi materi dan coba kalkulator."
+  },
+
+  // ---------- MENU "REFLEKSI" ----------
+  refleksi: {
+    ayat: {
+      arab: "وَيْلٌ لِلْمُطَفِّفِينَ",
+      ref: "QS. Al-Muthaffifīn [83]: 1",
+      teks: "Celakalah orang-orang yang curang (dalam menakar dan menimbang). Peringatan ini mengingatkan bahwa hitungan yang tidak jujur membawa akibat serius."
+    },
+    pertanyaanJudul: "Renungkan dan tuliskan di bukumu:",
+    pertanyaan: [
+      "Bagaimana kejujuran memengaruhi cara kamu menghitung untung dan rugi?",
+      "Mengapa persentase zakat yang tetap (2,5%) terasa adil?",
+      "Mengapa neto harus ditimbang dengan jujur? Apa akibatnya jika tidak?",
+      "Jika temanmu menawarkan pinjaman dengan tambahan yang diminta di awal, apa yang akan kamu pertimbangkan?",
+      "Kebaikan apa yang bisa kamu lakukan dengan keterampilan berhitungmu?"
+    ],
+    
+  }
+};
+/* ===================== AKHIR BLOK DATA ===================== */
+/* Di bawah ini kode program. Tidak perlu diubah. */
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function fm(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\*(.+?)\*/g,"<i>$1</i>")}
+function ayatCard(a,judul){return '<div class="card ayat">'+(judul?'<h3>'+fm(judul)+'</h3>':'')+'<div class="ar">'+esc(a.arab)+'</div><div class="ref">'+fm(a.ref)+'</div><p>'+fm(a.teks)+'</p></div>'}
+document.title=DATA.judul.replace(/[^\p{L}\p{N} ]/gu,"").trim();
+document.getElementById("h-judul").textContent=DATA.judul;
+document.getElementById("h-sub").textContent=DATA.subjudul;
+
+var M=DATA.mulai;
+document.getElementById("mulai").innerHTML='<h2>'+fm(M.judulHalaman)+'</h2>'+
+ '<div class="card"><h3>'+fm(M.tujuanJudul)+'</h3><ul>'+M.tujuan.map(function(t){return '<li>'+fm(t)+'</li>'}).join("")+'</ul></div>'+
+ ayatCard(M.ayat,M.ayat.judul)+
+ '<div class="card"><h3>'+fm(M.caraBelajarJudul)+'</h3><p>'+fm(M.caraBelajar)+'</p><button class="btn" onclick="go(\'materi\')">'+fm(M.tombol)+'</button></div>';
+
+document.getElementById("materi").innerHTML='<h2>Materi</h2>'+DATA.materi.map(function(m){
+ if(m.tipe==="ayat")return ayatCard(m,m.judul);
+ var cs=Array.isArray(m.contoh)?m.contoh:(m.contoh?[m.contoh]:[]);
+ return '<div class="card"><h3>'+fm(m.judul)+'</h3>'+(m.teks?'<p>'+fm(m.teks)+'</p>':'')+
+  (m.rumus&&m.rumus.length?'<div class="rumus">'+m.rumus.map(fm).join("<br>")+'</div>':'')+
+  cs.map(function(c){return '<p>'+fm(c)+'</p>'}).join("")+
+  (m.latihan?'<details class="lat"><summary>✍️ Coba sendiri</summary><p>'+fm(m.latihan.soal)+'</p><details><summary>Lihat jawaban</summary><p>'+fm(m.latihan.jawab)+'</p></details></details>':'')+
+  (m.nilai?'<div class="nilai">'+fm(m.nilai)+'</div>':'')+'</div>'}).join("");
+
+var R=DATA.refleksi;
+document.getElementById("refleksi").innerHTML='<h2>Refleksi</h2>'+ayatCard(R.ayat,"")+
+ '<div class="card"><h3>'+fm(R.pertanyaanJudul)+'</h3><ul>'+R.pertanyaan.map(function(t){return '<li>'+fm(t)+'</li>'}).join("")+'</ul></div>'+
+ '<div class="card"><p>'+fm(R.catatan)+'</p></div>';
+
+document.getElementById("z2").value=DATA.zakat.hargaEmasPerGram;
+document.getElementById("z-cat").textContent=DATA.zakat.catatan;
+
+var tabs=[["mulai","Mulai"],["materi","Materi"],["kalkulator","Kalkulator"],["kuis","Kuis"],["refleksi","Refleksi"]];
+var nav=document.getElementById("nav");
+tabs.forEach(function(t){var b=document.createElement("button");b.textContent=t[1];b.dataset.t=t[0];b.onclick=function(){go(t[0])};nav.appendChild(b)});
+function go(id){document.querySelectorAll("section").forEach(function(s){s.classList.toggle("on",s.id===id)});nav.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.dataset.t===id)});window.scrollTo(0,0)}
+go("mulai");
+
+function rp(n){return "Rp"+Math.round(n).toLocaleString("id-ID")}
+function v(id){return parseFloat(document.getElementById(id).value)||0}
+function hUntung(){var b=v("u1"),j=v("u2"),o=document.getElementById("uo");if(b<=0){o.textContent="Harga beli harus lebih dari 0.";return}
+var s=j-b;o.innerHTML=s>0?"✅ <b>Untung "+rp(s)+"</b> ("+(s/b*100).toFixed(1).replace(".",",")+"% dari harga beli)":s<0?"⚠️ <b>Rugi "+rp(-s)+"</b> ("+(-s/b*100).toFixed(1).replace(".",",")+"% dari harga beli)":"Impas (tidak untung, tidak rugi)"}
+function hDiskon(){var h=v("d1"),p=v("d2"),d=h*p/100;document.getElementById("do").innerHTML="Potongan: <b>"+rp(d)+"</b><br>Harga yang dibayar: <b>"+rp(h-d)+"</b>"}
+function hPekerja(){var a=v("p1"),b=v("p2"),c=v("p3"),o=document.getElementById("po");if(c<=0){o.textContent="Pekerja baru harus lebih dari 0.";return}
+o.innerHTML="Waktu baru = ("+a+" × "+b+") ÷ "+c+" = <b>"+(a*b/c).toFixed(1).replace(".",",")+" hari</b>"}
+function hZakat(){var h=v("z1"),g=v("z2"),ng=DATA.zakat.nisabGram,n=ng*g,o=document.getElementById("zo");
+o.innerHTML="Nisab ("+ng+" g emas) = <b>"+rp(n)+"</b><br>"+(h>=n?"Harta mencapai nisab → zakat 2,5% = <b>"+rp(h*0.025)+"</b> 🌾":"Harta belum mencapai nisab → belum wajib zakat mal (tetap dianjurkan bersedekah).")}
+
+function hBunga(){var m=v("b1"),p=v("b2"),t=v("b3"),b=m*p/100*t/12;document.getElementById("bo").innerHTML="Bunga = <b>"+rp(b)+"</b><br>Total = <b>"+rp(m+b)+"</b><br><small>Catatan: tambahan atas pinjaman yang disyaratkan di awal termasuk riba. Alat ini hanya untuk latihan hitung.</small>"}
+function hSkala(){var n=v("s1"),c=v("s2"),km=c*n/100000;document.getElementById("so").innerHTML="Jarak sebenarnya = <b>"+km.toLocaleString("id-ID",{maximumFractionDigits:2})+" km</b>"}
+function hNeto(){var b=v("n1"),p=v("n2"),t=b*p/100;document.getElementById("no").innerHTML="Tara = <b>"+t.toLocaleString("id-ID",{maximumFractionDigits:3})+" kg</b><br>Neto = <b>"+(b-t).toLocaleString("id-ID",{maximumFractionDigits:3})+" kg</b>"}
+var Q=DATA.kuis,qi=0,sk=0;
+function rq(){var b=document.getElementById("qbox"),pb=document.getElementById("pb"),T=DATA.teksKuis;
+if(qi>=Q.length){pb.style.width="100%";b.innerHTML="<h3>"+fm(T.selesai)+"</h3><p>"+fm(T.skor)+" <b>"+sk+" / "+Q.length+"</b></p><p>"+fm(sk/Q.length>=0.8?T.pujian4:sk/Q.length>=0.6?T.pujian3:T.pujianRendah)+"</p><button class='btn' id='ulang'>Ulangi Kuis</button>";document.getElementById("ulang").onclick=function(){qi=0;sk=0;rq()};return}
+var c=Q[qi];pb.style.width=(qi/Q.length*100)+"%";
+b.innerHTML="<p><b>Soal "+(qi+1)+" dari "+Q.length+"</b></p><p>"+fm(c.q)+"</p>"+c.o.map(function(t,i){return "<button class='opt' data-i='"+i+"'>"+String.fromCharCode(65+i)+". "+fm(t)+"</button>"}).join("")+"<div class='fb' id='fb'></div>";
+b.querySelectorAll(".opt").forEach(function(x){x.onclick=function(){pick(+x.dataset.i)}})}
+function pick(i){var c=Q[qi];document.querySelectorAll(".opt").forEach(function(x,k){x.disabled=true;if(k===c.a)x.classList.add("ok");else if(k===i)x.classList.add("bad")});
+if(i===c.a)sk++;
+document.getElementById("fb").innerHTML=(i===c.a?"✅ <b>Benar!</b> ":"❌ <b>Belum tepat.</b> ")+fm(c.e)+"<br><button class='btn' id='lanjut'>Lanjut →</button>";
+document.getElementById("lanjut").onclick=function(){qi++;rq()}}
+rq();
+</script>
+</body>
+</html>
